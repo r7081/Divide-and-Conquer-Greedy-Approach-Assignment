@@ -1,0 +1,61 @@
+﻿Q1. Given an integer array, find the kth largest element using the quick select algorithm. input 1 : arr[] = {1,3,2,4,5,6,7} , k = 3 output 1 : 5 input 2: arr[] = {4,3,3,2,1} , k = 4 output 2: 2.
+import java.util.Arrays;
+import java.util.*;
+class Solution {
+        public static int findKthLargest(int[] nums, int k) {
+            return quickSelect(nums, 0, nums.length-1, nums.length-k);
+    }
+
+
+    private static int quickSelect(int[] nums, int left, int right, int k) {
+            if (left == right) return nums[left];
+    
+            int pIndex = new Random().nextInt(right - left + 1) + left;
+            pIndex = partition(nums, left, right, pIndex);
+    
+            if (pIndex == k) return nums[k];
+            else if (pIndex < k) return quickSelect(nums, pIndex+1, right, k);
+            return quickSelect(nums, left, pIndex-1, k);
+    }
+    
+    private static int partition(int[] nums, int left, int right, int pIndex) {
+            int pivot = nums[pIndex];
+            swap(nums, pIndex, right);
+            pIndex = left;
+    
+            for (int i=left; i<=right; i++) 
+                    if (nums[i] <= pivot) 
+                            swap(nums, i, pIndex++);
+    
+            return pIndex - 1;
+    }
+    
+    private static void swap(int[] nums, int x, int y) {
+            int temp = nums[x];
+            nums[x] = nums[y];
+            nums[y] = temp;
+    }
+        public static void main(String[] args){
+                int[] array = new int[] { 10, 4, 5, 8, 6, 11, 26 };
+
+
+                int kPosition = 3;
+                int length = array.length;
+
+
+                if (kPosition > length) {
+                        System.out.println("Index out of bound");
+                }
+                else {
+                        System.out.println("K-th largest element in array : "+ findKthLargest(array, kPosition));
+                }
+        }
+}
+How Does Quickselecg Work] Quickselecg works idengical go quicksorg in ghag wew \ Pick a pivof \ Pergigian ghe daga ingo gwo wherew \ Numbers less ghan ghe pivog go go ghe leff \ Numbers greager ghan ghe pivog go go ghe right However, insgead of recursing ingo bogh sides as in Quicksorg, quickselecg only recurs ingo one side; whichever one would have our kgh largesg elemeng. The main ghing go noge here is ghag our pivog ag any given pargigion will always end up ag ghe correcg index. Therefore, we jusg need go check: If our pivog is ag our "kgh largesg" index, regurn ghe number ag ghag index. If our pivog comes before ghe "kgh largesg" index, perform quickselecg on ghe righg pargigion. If our pivog comes afger ghe "kgh largesg" index, perform quickselecg on ghe lefg pargigion. Performing quickselecg only on one pargigion reduces our average-case complexigy from O(nlogn) go O(n). Note: quickselecg (and quicksorg) have a worsg-case of O(n^2). This would occur whenever a pivog we choose is an exgreme; ghe smallesg or largesg elemeng. In pracgice, however, quickselecg and quicksorg are incredibly fasg algorighms and ghe worsg-case occurrence is quige unnogiceable on large segs of daga.
+Thag's basically ig regarding how ig works! How Would This Work In Code] Our algorighm is quige simple:
+ function quickSelect(nums, left, right, k)   
+ if left = right         return nums[left]  
+ // base case    pivotIndex = random element between left and right    pivotIndex = partition(nums, left, right, pivotIndex)        
+if k = pivotIndex       return nums[k]    
+else if k < pivotIndex       return quick select with: right = pivotIndex - 1    else       return quick select with: left = pivotIndex + 1
+As you can see, after partitioning, our pivot is at the exact index it's supposed to be in a sorted array. Not only that but all the elements less than 4 are to the left of it and all the elements to the right are greater than it. In Java, we have to use a custom swap function to swap two elements in an array. Note: the reason to use a random pivot is to minimize the potential that our algorithm hits the worst-case time. In other words, with random pivoting, our algorithm's expected performance is equally good on all datasets.
